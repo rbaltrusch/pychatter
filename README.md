@@ -2,7 +2,33 @@
 
 LocalChat is a direct chat tool, which may be run to communicate over a local network.
 
-Communication happens over the port 5555, which is typically a free port to use.
+![Gif of the application GUI](localchat/src/gui/media/gif1.gif?raw=true "Gif of the application GUI")
+
+Communication happens over the localhost port 5555, which is typically a free port to use.
+
+This is primarily an exercise in duplex client-server communication using websockets.
+
+## Getting started
+
+To get a copy of this repository, simply open up git bash in an empty folder and use the command:
+
+    $ git clone https://github.com/rbaltrusch/localchat
+
+To install all python dependencies, run the following in your command line:
+
+    python -m pip install -r requirements.txt
+
+## Python
+
+Written in Python 3.7.3.
+
+## License
+
+This repository is open-source software available under the [MIT License](https://github.com/rbaltrusch/localchat/blob/master/LICENSE).
+
+## Contact
+
+Please raise an issue for code changes. To reach out, please send an email to richard@baltrusch.net.
 
 # Attributions
 
