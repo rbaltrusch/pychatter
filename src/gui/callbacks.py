@@ -89,13 +89,13 @@ def update_username(*_):
         return
 
     #inform server
-    new_username = app.data['username']
-    request_str = util.Request('put', body=f'clientname;{new_username}')
-    request = util.parse_json_str(request_str)
-    status = request.get('status')
+    request = util.Request('put', body=f'clientname;{new_username}')
+    response_str = connection.send(request.encode())
+    response = util.parse_json_str(response_str)
+    status = response.get('status')
     if status == 200:
         set_status_message('Successfully updated username!')
-        *_, old_username = request.split(';')
+        *_, old_username = response.split(';')
     else:
         set_error_message('Failed to update username on server!')
         old_username = None #get from server
