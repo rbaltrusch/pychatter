@@ -128,7 +128,10 @@ def init():
         str(e)
 
 def run():
-    conn, addr = socket_.accept()
+    try:
+        conn, addr = socket_.accept()
+    except:
+        return
     print("Connected to:", addr)
     start_new_thread(threaded_client, (conn,))
 
