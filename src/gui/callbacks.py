@@ -141,13 +141,13 @@ def _get_updated_list_of_clients_from_server():
         previous_clients_counter = Counter(previous_clients)
         updated_clients_counter = Counter(updated_clients)
 
-        new_clients_counter = updated_clients_counter - previous_clients_counter
-        for client_ in new_clients_counter.elements():
-            _append_text_message(text=f'{client_} has joined the chat.\n')
-
         old_clients_counter = previous_clients_counter - updated_clients_counter
         for client_ in old_clients_counter.elements():
             _append_text_message(text=f'{client_} has left the chat.\n')
+
+        new_clients_counter = updated_clients_counter - previous_clients_counter
+        for client_ in new_clients_counter.elements():
+            _append_text_message(text=f'{client_} has joined the chat.\n')
         app.data['clients'] = updated_clients
     else:
         set_error_message('Could not get an updated list of clients from the server.')
