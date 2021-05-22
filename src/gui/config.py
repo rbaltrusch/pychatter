@@ -8,6 +8,8 @@ Created on Sat Jan 30 15:26:16 2021
 TITLE = 'LocalChat'
 PORT = 5555
 CONFIG_FILENAME = 'config.json'
+MAX_MESSAGE_LENGTH = 280
+MAX_USERNAME_LENGTH = 30
 
 #colours
 FG = '#FFFFFF'
