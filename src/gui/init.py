@@ -115,7 +115,7 @@ def init_chat_view():
     view = components.View()
 
     frame = tk.Frame(root, bd=0, bg=config.BG)
-    component = components.Frame(frame, sticky='NSEW', row=2, row_span=3, column=0, column_span=3, padx=10, pady=10)
+    component = components.Frame(frame, sticky='NSEW', row=2, row_span=2, column=0, column_span=3, padx=10, pady=10)
     component.add_col(0)
     component.add_col(200)
     component.add_col(0)
