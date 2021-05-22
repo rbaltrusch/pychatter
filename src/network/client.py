@@ -14,6 +14,7 @@ class NetworkConnection:
 
     def __init__(self, ip_address):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.socket.settimeout(network.config.TIMEOUT)
         self.addr = (ip_address, network.config.PORT)
         response_str = self.connect() #pylint: disable=invalid-name
         response = network.util.parse_json_str(response_str)
