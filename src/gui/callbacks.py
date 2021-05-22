@@ -28,6 +28,24 @@ def set_error_message(message):
     app['status'].hide_component('status_entry')
     app['status'].unhide_component('error_entry')
 
+def update_message_length(*_, reset=False):
+    """Callback for chat message write trace"""
+    text = app['chat']['chat_window'].tk_component.get('1.0', tk.END) if not reset else ''
+    app.data['message_length_message'].set(f'{len(text)}/{config.MAX_MESSAGE_LENGTH}')
+    app.data['message_length'].set(len(text))
+
+    message = 'Exceeded maximum message length!'
+    if len(text) > config.MAX_MESSAGE_LENGTH and not app.data['error'].get() == message:
+        set_error_message(message)
+    else:
+        app['chat']['send_button'].config(bg=config.BG2)
+
+def update_username_button(*_):
+    if len(app.data['username'].get()) > config.MAX_USERNAME_LENGTH:
+        app['server']['update_button'].config(bg=config.ERR)
+    else:
+        app['server']['update_button'].config(bg=config.BG2)
+
 def focus(event):
     """Callback for left-click -- stores the selected widget"""
     app.focused_widget_name = str(event.widget)
@@ -49,7 +67,13 @@ def host_server(*_):
 
 def update_username(*_):
     """Updates the username on the server and locally updates the clients list"""
-    if not app.data['connection']:
+    new_username = app.data['username'].get()
+    if len(new_username) > config.MAX_USERNAME_LENGTH:
+        set_error_message(f'Maximum user name length exceeded ({len(new_username)}/{config.MAX_USERNAME_LENGTH}).')
+        return
+
+    connection = app.data['connection']
+    if not connection:
         set_status_message('Successfully updated username!')
         return
 
@@ -210,6 +234,10 @@ def connect_to_server(*_):
         app['server'].unhide_component('disconnect_button')
 
         user_name = app.data["username"].get()
+        if len(user_name) > config.MAX_USERNAME_LENGTH:
+            set_error_message(f'Maximum user name length exceeded ({len(user_name)}/{config.MAX_USERNAME_LENGTH}).')
+            return
+
         body = f'clientname;{user_name}'
         request = util.Request('post', body)
         response_bytes = connection.send(request.encode())
