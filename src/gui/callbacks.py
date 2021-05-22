@@ -10,6 +10,7 @@ import datetime
 from collections import Counter
 import tkinter as tk
 import threading
+import socket
 from gui import app, root, config
 from network import client, util, server
 
@@ -249,7 +250,11 @@ def connect_to_server(*_):
         set_error_message('Please enter an IP address!')
         return
 
-    connection = client.NetworkConnection(ip_address)
+    try:
+        connection = client.NetworkConnection(ip_address)
+    except socket.timeout:
+        set_error_message('Connection timed out.')
+
     app.data['connection'] = connection
     if connection:
         app['server'].hide_component('connect_button')
