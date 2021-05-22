@@ -82,6 +82,12 @@ def init_server_view():
     component = components.Component(host_button, sticky='NSEW', row=0, column=3)
     view.add_component(component, 'host_button')
 
+    #Unhost button
+    unhost_button = tk.Button(frame, text='Unhost', command=callbacks.unhost_server, **config.BUTTON_THEME)
+    component = components.Component(unhost_button, sticky='NSEW', row=0, column=3)
+    view.add_component(component, 'unhost_button')
+    view.hide_component('unhost_button')
+
     #Disconnect button
     disconnect_button = tk.Button(frame, text='Disconnect', command=callbacks.disconnect_from_server, **config.BUTTON_THEME)
     component = components.Component(disconnect_button, sticky='NSEW', row=0, column=2)

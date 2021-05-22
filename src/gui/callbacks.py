@@ -65,6 +65,17 @@ def host_server(*_):
     except:
         set_error_message('Failed to host server!')
 
+def unhost_server(*_):
+    try:
+        if server.socket_:
+            server.socket_.close()
+        app.data['hosting'].set('')
+        app['server'].hide_component("unhost_button")
+        app['server'].unhide_component("host_button")
+        set_status_message('Successfully unhosted.')
+    except Exception as exc:
+        print(exc)
+
 def update_username(*_):
     """Updates the username on the server and locally updates the clients list"""
     new_username = app.data['username'].get()
