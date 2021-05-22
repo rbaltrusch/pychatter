@@ -134,7 +134,7 @@ def init_status_view():
     view.activate()
 
     frame = tk.Frame(root, bd=0, bg=config.BG)
-    component = components.Frame(frame, sticky='NSEW', row=4, column=0, column_span=3, padx=17, pady=10)
+    component = components.Frame(frame, sticky='NSEW', row=5, row_span=2, column=0, column_span=3, padx=17, pady=10)
     component.add_col(300)
     component.add_col(0)
     view.add_frame_component(component, 'frame')
@@ -147,4 +147,8 @@ def init_status_view():
     error_entry = tk.Entry(frame, textvariable=app.data['error'], **config.ERROR_STATUS_THEME)
     component = components.Component(error_entry, sticky='NSEW', row=0, column=0)
     view.add_component(component, 'error_entry')
+
+    hosting_entry = tk.Entry(frame, textvariable=app.data['hosting'], **config.STATUS_THEME)
+    component = components.Component(hosting_entry, sticky='NSEW', row=1, column=0)
+    view.add_component(component, 'hosting_entry')
     return view
