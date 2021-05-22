@@ -21,7 +21,7 @@ except:
 
 #close server socket if hosting
 try:
-    if network.server._socket:
-        network.server._socket.close()
+    if network.server.socket_:
+        network.server.socket_.close()
 except:
     pass
