@@ -6,6 +6,7 @@ Created on Sun May 16 18:46:57 2021
 """
 
 import json
+import datetime
 import uuid
 import socket
 from _thread import start_new_thread
@@ -76,6 +77,7 @@ def threaded_client(conn):
                     user_name = clients.get(user_id)
                     if user_name:
                         chat_message_d['username'] = user_name
+                        chat_message_d['abstimestamp'] = datetime.datetime.utcnow().timestamp()
                         response = Response(200, body='Received chat message')
                         chat.append(chat_message_d)
                     else:
