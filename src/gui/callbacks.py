@@ -162,8 +162,8 @@ def _get_updated_chat_from_server():
         return
 
     request = util.Request('get', body='chat')
-    response_bytes = connection.send(request.encode())
-    response = util.parse_json_str(response_bytes)
+    response_str = connection.send(request.encode())
+    response = util.parse_json_str(response_str)
     status = response.get('status')
     print(response)
     if status == 200:
