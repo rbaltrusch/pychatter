@@ -41,6 +41,9 @@ def host_server(*_):
         ip_address = util.get_host_ip()
         app.data['server_ip'].set(ip_address)
         set_status_message(f'Successfully hosted server. IP: {ip_address}')
+        app.data['hosting'].set(f'Hosting. IP: {ip_address}.')
+        app['server'].hide_component("host_button")
+        app['server'].unhide_component("unhost_button")
     except:
         set_error_message('Failed to host server!')
 

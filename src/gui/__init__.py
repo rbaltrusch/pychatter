@@ -15,6 +15,7 @@ app = Gui(root)
 #tk variable declarations
 app.data['error'] = tk.StringVar()
 app.data['status'] = tk.StringVar()
+app.data['hosting'] = tk.StringVar()
 
 app.data['delay_ms'] = 1000 #time between server updates
 app.data['server_ip'] = tk.StringVar()
