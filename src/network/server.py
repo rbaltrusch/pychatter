@@ -121,6 +121,7 @@ def init():
     socket_.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     try:
         ip_address = get_host_ip()
+        print(f'Hosting on {ip_address}')
         socket_.bind((ip_address, network.config.PORT))
         socket_.listen(network.config.MAX_CLIENTS)
     except socket.error as e:
