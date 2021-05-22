@@ -200,6 +200,10 @@ def _clear_chat_history():
 
 def send_message(*_):
     """Callback for send button"""
+    if app.data['message_length'].get() > config.MAX_MESSAGE_LENGTH:
+        app['chat']['send_button'].config(bg=config.ERR)
+        return
+
     connection = app.data['connection']
     if connection:
         text = app['chat']['chat_window'].tk_component.get("1.0", tk.END)
@@ -215,7 +219,8 @@ def send_message(*_):
             user_name = app.data["username"].get()
             _append_formatted_text_message(text, timestamp, user_name)
             app.data['chat'].append({'text': text, 'username': user_name, 'timestamp': timestamp})
-            text_component = app['chat']['chat_window'].tk_component.delete("1.0", tk.END) #delete all contents
+            app['chat']['chat_window'].tk_component.delete("1.0", tk.END) #delete all contents
+            update_message_length(reset=True)
         else:
             set_error_message('Server error occured on sending the chat message.')
 

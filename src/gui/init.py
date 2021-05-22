@@ -109,7 +109,7 @@ def init_chat_view():
     view = components.View()
 
     frame = tk.Frame(root, bd=0, bg=config.BG)
-    component = components.Frame(frame, sticky='NSEW', row=2, column=0, column_span=3, padx=10, pady=10)
+    component = components.Frame(frame, sticky='NSEW', row=2, row_span=3, column=0, column_span=3, padx=10, pady=10)
     component.add_col(0)
     component.add_col(200)
     component.add_col(0)
@@ -117,16 +117,21 @@ def init_chat_view():
 
     chat_history = CustomText(frame, width=50, **config.ENTRY_THEME, state='disabled')
     chat_history.tag_configure('prim', foreground=config.PRIM)
-    component = components.Component(chat_history, sticky='NSEW', row=0, column=1)
+    component = components.Component(chat_history, sticky='NSEW', row=0, column_span=2, column=1)
     view.add_component(component, 'chat_history')
 
     chat_window = CustomText(frame, width=50, height=3, **config.ENTRY_THEME)
     component = components.Component(chat_window, sticky='NSEW', row=1, column=1, pady=10)
     view.add_component(component, 'chat_window')
+    chat_window.bind("<KeyRelease>", callbacks.update_message_length)
 
     send_button = tk.Button(frame, text='Send', command=callbacks.send_message, **config.BUTTON_THEME)
     component = components.Component(send_button, sticky='NSEW', row=1, column=2)
     view.add_component(component, 'send_button')
+
+    message_length_entry = tk.Label(frame, textvariable=app.data['message_length_message'], **config.LABEL_THEME)
+    component = components.Component(message_length_entry, sticky='NSE', row=2, column=1)
+    view.add_component(component, 'message_length_entry')
     return view
 
 def init_status_view():
