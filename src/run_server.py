@@ -6,4 +6,5 @@ Created on Mon May 10 18:48:31 2021
 """
 
 from network import server
-server.run()
+server.init()
+server.run_forever()
