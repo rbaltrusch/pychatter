@@ -6,6 +6,7 @@ Created on Sat Jan 30 15:17:38 2021
 """
 
 import json
+import datetime
 from collections import Counter
 import tkinter as tk
 import threading
@@ -167,15 +168,20 @@ def _get_updated_chat_from_server():
     status = response.get('status')
     print(response)
     if status == 200:
+        current_utc_timestamp = datetime.datetime.utcnow().timestamp()
         for chat_message_d in response['body']:
-            if chat_message_d in app.data['chat']:
+            partial_message = {k: v for k, v in chat_message_d.items() if k != 'abstimestamp'}
+            if partial_message in app.data['chat']:
+                continue
+
+            if current_utc_timestamp - app.data['delay_ms'] * 2 / 1000 > chat_message_d.get('abstimestamp'):
                 continue
 
             try:
                 _append_formatted_text_message(chat_message_d['text'],
                                                chat_message_d['timestamp'],
                                                chat_message_d['username'])
-                app.data['chat'].append(chat_message_d)
+                app.data['chat'].append(partial_message)
             except:
                 set_error_message('Failed to update chat history with new updates.')
     else:
