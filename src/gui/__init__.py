@@ -29,3 +29,5 @@ app.data['username'] = tk.StringVar()
 app.data['username'].set('User')
 app.data['config'] = {}
 app.data['config']['chat_format'] = '%T: %U: %M'
+app.data['message_length_message'] = tk.StringVar()
+app.data['message_length'] = tk.IntVar()
