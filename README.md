@@ -20,6 +20,10 @@ To install all python dependencies, run the following in your command line:
 
     python -m pip install -r requirements.txt
 
+## Contributions
+
+To contribute to this repository, please read the [contribution guidelines](CONTRIBUTING.md).
+
 ## Python
 
 Written in Python 3.7.3.
