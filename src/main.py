@@ -4,9 +4,10 @@ Created on Mon May 10 00:12:31 2021
 
 @author: Korean_Crimson
 """
-
-from network import server, cleanup
-from gui import app, init
+from gui import app
+from gui import init
+from network import cleanup
+from network import server
 
 init.init()
 app.pack_all()
