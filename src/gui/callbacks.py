@@ -4,15 +4,20 @@ Created on Sat Jan 30 15:17:38 2021
 
 @author: Korean_Crimson
 """
-
-import json
 import datetime
-from collections import Counter
-import tkinter as tk
-import threading
+import json
 import socket
-from gui import app, root, config
-from network import client, util, server
+import threading
+import tkinter as tk
+from collections import Counter
+
+from gui import app
+from gui import config
+from gui import root
+from network import client
+from network import server
+from network import util
+
 
 def set_error(*_):
     """Callback for error StringVar write trace"""
@@ -20,12 +25,14 @@ def set_error(*_):
     app['server']['connect_button'].config(bg=background)
 
 def set_status_message(message):
+    """Sets the text of the status entry to the specified message"""
     app.data['status'].set(message)
     app['status'].hide_component('error_entry')
     app['status'].unhide_component('status_entry')
     app.data['error'].set("")
 
 def set_error_message(message):
+    """Sets the text of the error entry to the specified message"""
     app.data['error'].set(message)
     app['status'].hide_component('status_entry')
     app['status'].unhide_component('error_entry')
@@ -43,6 +50,7 @@ def update_message_length(*_, reset=False):
         app['chat']['send_button'].config(bg=config.BG2)
 
 def update_username_button(*_):
+    """Updates the colour of the username button, depending on the validity of the username"""
     if len(app.data['username'].get()) > config.MAX_USERNAME_LENGTH:
         app['server']['update_button'].config(bg=config.ERR)
     else:
@@ -64,10 +72,11 @@ def host_server(*_):
         app.data['hosting'].set(f'Hosting. IP: {ip_address}.')
         app['server'].hide_component("host_button")
         app['server'].unhide_component("unhost_button")
-    except:
+    except Exception: #pylint: disable=broad-except
         set_error_message('Failed to host server!')
 
 def unhost_server(*_):
+    """Closes the server socket and reverts the server view to not-hosting mode"""
     try:
         if server.socket_:
             server.socket_.close()
@@ -75,14 +84,15 @@ def unhost_server(*_):
         app['server'].hide_component("unhost_button")
         app['server'].unhide_component("host_button")
         set_status_message('Successfully unhosted.')
-    except Exception as exc:
+    except Exception as exc: #pylint: disable=broad-except
         print(exc)
 
 def update_username(*_):
     """Updates the username on the server and locally updates the clients list"""
     new_username = app.data['username'].get()
     if len(new_username) > config.MAX_USERNAME_LENGTH:
-        set_error_message(f'Maximum user name length exceeded ({len(new_username)}/{config.MAX_USERNAME_LENGTH}).')
+        set_error_message('Maximum user name length exceeded '
+                          f'({len(new_username)}/{config.MAX_USERNAME_LENGTH}).')
         return
 
     connection = app.data['connection']
@@ -108,6 +118,7 @@ def update_username(*_):
     clients.append(new_username)
 
 def get_recurring_server_updates():
+    """Gets updates from the server, then schedules another update in the future"""
     get_server_updates()
     delay_ms = app.data['delay_ms']
     if app.data['connection']:
@@ -175,7 +186,8 @@ def _get_updated_chat_from_server():
             if partial_message in app.data['chat']:
                 continue
 
-            if current_utc_timestamp - app.data['delay_ms'] * 2 / 1000 > chat_message_d.get('abstimestamp'):
+            two_seconds_ago = current_utc_timestamp - app.data['delay_ms'] * 2 / 1000
+            if two_seconds_ago > chat_message_d.get('abstimestamp'):
                 continue
 
             try:
@@ -183,7 +195,7 @@ def _get_updated_chat_from_server():
                                                chat_message_d['timestamp'],
                                                chat_message_d['username'])
                 app.data['chat'].append(partial_message)
-            except:
+            except Exception: #pylint: disable=broad-except
                 set_error_message('Failed to update chat history with new updates.')
     else:
         set_error_message('Could not get chat updates from the server.')
@@ -194,12 +206,12 @@ def _append_text_message(text):
     text_widget.config(state='normal')
     text_widget.insert(tk.END, text)
     text_widget.config(state='disabled')
-    
+
 def _append_formatted_text_message(text, timestamp, user_name):
     """Appends the passed text to the chat history with formatting"""
-    config = app.data['config']
-    if config and config.get('chat_format'):
-        formatted = config['chat_format'].replace('%T', timestamp)
+    config_ = app.data['config']
+    if config_ and config_.get('chat_format'):
+        formatted = config_['chat_format'].replace('%T', timestamp)
         formatted = formatted.replace('%U', user_name)
         if '%M' in formatted:
             formatted = formatted.replace('%M', text)
@@ -262,7 +274,8 @@ def connect_to_server(*_):
 
         user_name = app.data["username"].get()
         if len(user_name) > config.MAX_USERNAME_LENGTH:
-            set_error_message(f'Maximum user name length exceeded ({len(user_name)}/{config.MAX_USERNAME_LENGTH}).')
+            set_error_message('Maximum user name length exceeded '
+                              f'({len(user_name)}/{config.MAX_USERNAME_LENGTH}).')
             return
 
         body = f'clientname;{user_name}'
@@ -275,7 +288,7 @@ def connect_to_server(*_):
         else:
             set_error_message('Error setting username on server!')
         app.data['clients'].append(user_name)
-        _clear_chat_history
+        _clear_chat_history()
         app['chat'].activate()
         app['chat'].repack()
         get_recurring_server_updates()

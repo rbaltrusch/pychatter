@@ -5,9 +5,10 @@ Created on Mon May 10 20:45:03 2021
 @author: Bryan Oakley
 source: https://stackoverflow.com/questions/3781670/how-to-highlight-text-in-a-tkinter-text-widget
 """
-
 import tkinter as tk
 
+#pylint: disable=too-many-arguments
+#pylint: disable=too-many-ancestors
 class CustomText(tk.Text):
     '''A text widget with a new method, highlight_pattern()
 
@@ -41,8 +42,10 @@ class CustomText(tk.Text):
         while True:
             index = self.search(pattern, "matchEnd","searchLimit",
                                 count=count, regexp=regexp)
-            if index == "": break
-            if count.get() == 0: break # degenerate pattern which matches zero-length strings
+            if index == "":
+                break
+            if count.get() == 0: # degenerate pattern which matches zero-length strings
+                break
             self.mark_set("matchStart", index)
             self.mark_set("matchEnd", "%s+%sc" % (index, count.get()))
             self.tag_add(tag, "matchStart", "matchEnd")

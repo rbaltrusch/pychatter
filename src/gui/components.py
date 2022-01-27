@@ -4,11 +4,9 @@ Created on Sat Jan 30 15:08:31 2021
 
 @author: Korean_Crimson
 """
-
 #pylint: disable=line-too-long
-
-import sys
 import ctypes
+import sys
 import tkinter as tk
 
 class Tk(tk.Tk):
@@ -39,7 +37,7 @@ class Tk(tk.Tk):
                 frame.grid(row=row, column=col)
 
     def schedule(self, delay_ms, func):
-        """"""
+        """Schedules the specified function to run after the specified delay in milliseconds"""
         self.after(delay_ms, func)
 
     def set_icon(self, icon_path):

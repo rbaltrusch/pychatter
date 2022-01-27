@@ -4,16 +4,19 @@ Created on Sun May 16 18:46:57 2021
 
 @author: Korean_Crimson
 """
-
-import json
 import datetime
-import uuid
+import json
 import socket
+import uuid
 from _thread import start_new_thread
+
 import network.config
 from network.config import MAX_CHAT_RESP
-from network.util import Response, parse_json_str, get_host_ip
+from network.util import get_host_ip
+from network.util import parse_json_str
+from network.util import Response
 
+#pylint: disable=global-statement
 #pylint: disable=invalid-name
 
 socket_ = None
@@ -21,6 +24,7 @@ clients = {}
 chat = []
 killed = False
 
+#pylint: disable=too-many-branches,too-many-statements # for now...
 def threaded_client(conn):
     """Tries to receive data from the client connection until the connection is
     terminated. Currently sends back the data received to all clients, unless
@@ -115,6 +119,7 @@ def threaded_client(conn):
     print(clients, chat)
 
 def init():
+    """Initialises the server"""
     global socket_
     print("Waiting for a connection, Server Started")
     socket_ = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -128,15 +133,19 @@ def init():
         str(e)
 
 def run():
+    """Tries to accept a connection from the socket. If possible, starts a new
+    server thread that deals with the socket until the connection is closed.
+    """
     try:
         conn, addr = socket_.accept()
-    except:
+    except Exception as exc: #pylint: disable=broad-except
+        print(str(exc))
         return
     print("Connected to:", addr)
     start_new_thread(threaded_client, (conn,))
 
 def run_forever():
-    """Main function"""
+    """Runs the server until it is killed"""
     while True:
         run()
         if killed:

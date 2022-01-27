@@ -4,13 +4,17 @@ Created on Sun Jan 31 17:57:26 2021
 
 @author: Korean_Crimson
 """
-
 #pylint: disable=import-error
 #pylint: disable=line-too-long
-import os
 import json
+import os
 import tkinter as tk
-from gui import root, app, callbacks, config, components
+
+from gui import app
+from gui import callbacks
+from gui import components
+from gui import config
+from gui import root
 from gui.text import CustomText
 
 def init():
@@ -38,7 +42,7 @@ def init_root():
     try:
         icon_path = os.path.join('gui', 'media', 'icon.png')
         root.set_icon(icon_path)
-    except:
+    except Exception: #pylint: disable=broad-except
         print('Couldnt set icon properly!')
 
 def init_config():
@@ -47,7 +51,7 @@ def init_config():
         try:
             with open(config.CONFIG_FILENAME, 'r') as file:
                 dict_ = json.load(file)
-        except:
+        except (PermissionError, json.decoder.JSONDecodeError):
             dict_ = {}
         app.data['config'] = dict_
 
