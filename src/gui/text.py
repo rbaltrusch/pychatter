@@ -47,5 +47,5 @@ class CustomText(tk.Text):
             if count.get() == 0: # degenerate pattern which matches zero-length strings
                 break
             self.mark_set("matchStart", index)
-            self.mark_set("matchEnd", "%s+%sc" % (index, count.get()))
+            self.mark_set("matchEnd", f"{index}+{count.get()}c")
             self.tag_add(tag, "matchStart", "matchEnd")

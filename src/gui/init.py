@@ -49,7 +49,7 @@ def init_config():
     """Read config from config file, if present"""
     if os.path.isfile(config.CONFIG_FILENAME):
         try:
-            with open(config.CONFIG_FILENAME, 'r') as file:
+            with open(config.CONFIG_FILENAME, 'r') as file: #pylint: disable=unspecified-encoding
                 dict_ = json.load(file)
         except (PermissionError, json.decoder.JSONDecodeError):
             dict_ = {}
