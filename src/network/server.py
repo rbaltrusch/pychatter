@@ -153,6 +153,11 @@ def run_forever():
                 socket_.close()
             break
 
+def kill():
+    """Kills the server."""
+    global killed
+    killed = True
+
 if __name__ == '__main__':
     init()
     run()
