@@ -10,7 +10,6 @@ import re
 import socket
 import threading
 import tkinter as tk
-from collections import Counter
 
 from gui import app
 from gui import config
@@ -262,7 +261,7 @@ def send_message(*_):
         return
 
     text = app["chat"]["chat_window"].tk_component.get("1.0", tk.END)
-    message = re.sub("\s+$", "\n", text) #trim trailing whitespace
+    message = re.sub("\\s+$", "\n", text) #trim trailing whitespace
     timestamp = util.get_timestamp()
     chat_message_d = {"text": message, "userid": connection.id, "timestamp": timestamp}
     chat_message = json.dumps(chat_message_d)

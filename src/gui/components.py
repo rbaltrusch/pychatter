@@ -179,7 +179,7 @@ class View:
         return {**self._components, **self._frame_components}
 
 
-# pylint: disable=too-many-instance-attribute
+# pylint: disable=too-many-instance-attributes
 @dataclass
 class Component:
     """Wrapper class around tk widgets that holds all information required
