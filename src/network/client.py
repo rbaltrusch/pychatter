@@ -32,6 +32,14 @@ class NetworkConnection:
             print(f'failed: {str(exc)}')
         return None
 
+    def send_request(self, head="", body="") -> Dict[str, Any]:
+        """Sends a request with given head and body and returns the server response"""
+        request = network.util.Request(head, body)
+        response_str = self.send(request.encode())
+        if response_str is None:
+            return {}
+        return network.util.parse_json_str(response_str)
+
     def send(self, data: bytes) -> Optional[str]:
         """Sends the data (bytes) and returns the server response (str)"""
         try:
