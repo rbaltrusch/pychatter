@@ -144,22 +144,23 @@ def _get_updated_list_of_clients_from_server():
 
     response = util.send_request(connection, head='get/clients')
     status = response.get('status')
-    if status == 200:
-        previous_clients = app.data['clients']
-        updated_clients = response['body']
-        previous_clients_counter = Counter(previous_clients)
-        updated_clients_counter = Counter(updated_clients)
-
-        old_clients_counter = previous_clients_counter - updated_clients_counter
-        for client_ in old_clients_counter.elements():
-            _append_text_message(text=f'{client_} has left the chat.\n')
-
-        new_clients_counter = updated_clients_counter - previous_clients_counter
-        for client_ in new_clients_counter.elements():
-            _append_text_message(text=f'{client_} has joined the chat.\n')
-        app.data['clients'] = updated_clients
-    else:
+    if status != 200:
         set_error_message('Could not get an updated list of clients from the server.')
+        return
+
+    previous_clients = app.data['clients']
+    updated_clients = response['body']
+    previous_clients_counter = Counter(previous_clients)
+    updated_clients_counter = Counter(updated_clients)
+
+    old_clients_counter = previous_clients_counter - updated_clients_counter
+    for client_ in old_clients_counter.elements():
+        _append_text_message(text=f'{client_} has left the chat.\n')
+
+    new_clients_counter = updated_clients_counter - previous_clients_counter
+    for client_ in new_clients_counter.elements():
+        _append_text_message(text=f'{client_} has joined the chat.\n')
+    app.data['clients'] = updated_clients
 
 def _get_updated_chat_from_server():
     """gets latest chat messages from server. This is limited on the server side to
@@ -173,26 +174,29 @@ def _get_updated_chat_from_server():
     response = util.send_request(connection, head='get/chat')
     status = response.get('status')
     print(response)
-    if status == 200:
-        current_utc_timestamp = datetime.datetime.utcnow().timestamp()
-        for chat_message_d in response['body']:
-            partial_message = {k: v for k, v in chat_message_d.items() if k != 'abstimestamp'}
-            if partial_message in app.data['chat']:
-                continue
-
-            two_seconds_ago = current_utc_timestamp - app.data['delay_ms'] * 2 / 1000
-            if two_seconds_ago > chat_message_d.get('abstimestamp'):
-                continue
-
-            try:
-                _append_formatted_text_message(chat_message_d['text'],
-                                               chat_message_d['timestamp'],
-                                               chat_message_d['username'])
-                app.data['chat'].append(partial_message)
-            except Exception: #pylint: disable=broad-except
-                set_error_message('Failed to update chat history with new updates.')
-    else:
+    if status != 200:
         set_error_message('Could not get chat updates from the server.')
+        return
+
+    current_utc_timestamp = datetime.datetime.utcnow().timestamp()
+    for chat_message_d in response['body']:
+        partial_message = {k: v for k, v in chat_message_d.items() if k != 'abstimestamp'}
+        if partial_message in app.data['chat']:
+            continue
+
+        two_seconds_ago = current_utc_timestamp - app.data['delay_ms'] * 2 / 1000
+        if two_seconds_ago > chat_message_d.get('abstimestamp'):
+            continue
+
+        try:
+            _append_formatted_text_message(
+                chat_message_d['text'],
+                chat_message_d['timestamp'],
+                chat_message_d['username']
+            )
+            app.data['chat'].append(partial_message)
+        except Exception: #pylint: disable=broad-except
+            set_error_message('Failed to update chat history with new updates.')
 
 def _append_text_message(text):
     """Appends the passed text to the chat history without formatting"""
@@ -229,22 +233,25 @@ def send_message(*_):
         return
 
     connection = app.data['connection']
-    if connection:
-        text = app['chat']['chat_window'].tk_component.get("1.0", tk.END)
-        timestamp = util.get_timestamp()
-        chat_message_d = {'text': text, 'userid': connection.id, 'timestamp': timestamp}
-        chat_message = json.dumps(chat_message_d)
+    if not connection:
+        return
 
-        response = util.send_request(connection, head='post/chatmessage', body=chat_message)
-        status = response.get('status')
-        if status == 200:
-            user_name = app.data["username"].get()
-            _append_formatted_text_message(text, timestamp, user_name)
-            app.data['chat'].append({'text': text, 'username': user_name, 'timestamp': timestamp})
-            app['chat']['chat_window'].tk_component.delete("1.0", tk.END) #delete all contents
-            update_message_length(reset=True)
-        else:
-            set_error_message('Server error occured on sending the chat message.')
+    text = app['chat']['chat_window'].tk_component.get("1.0", tk.END)
+    timestamp = util.get_timestamp()
+    chat_message_d = {'text': text, 'userid': connection.id, 'timestamp': timestamp}
+    chat_message = json.dumps(chat_message_d)
+
+    response = util.send_request(connection, head='post/chatmessage', body=chat_message)
+    status = response.get('status')
+    if status != 200:
+        set_error_message('Server error occured on sending the chat message.')
+        return
+
+    user_name = app.data["username"].get()
+    _append_formatted_text_message(text, timestamp, user_name)
+    app.data['chat'].append({'text': text, 'username': user_name, 'timestamp': timestamp})
+    app['chat']['chat_window'].tk_component.delete("1.0", tk.END) #delete all contents
+    update_message_length(reset=True)
 
 def connect_to_server(*_):
     """Callback for connect button"""
@@ -260,30 +267,31 @@ def connect_to_server(*_):
         set_error_message('Connection timed out.')
 
     app.data['connection'] = connection
-    if connection:
-        app['server'].hide_component('connect_button')
-        app['server'].unhide_component('disconnect_button')
-
-        user_name = app.data["username"].get()
-        if len(user_name) > config.MAX_USERNAME_LENGTH:
-            set_error_message('Maximum user name length exceeded '
-                              f'({len(user_name)}/{config.MAX_USERNAME_LENGTH}).')
-            return
-
-        response = util.send_request(connection, head='post/clientname', body=user_name)
-        status = response.get('status')
-        if status == 200:
-            set_status_message('Connected to server.')
-        else:
-            set_error_message('Error setting username on server!')
-        app.data['clients'].append(user_name)
-        _clear_chat_history()
-        app['chat'].activate()
-        app['chat'].repack()
-        get_recurring_server_updates()
-        _append_text_message(text='You have joined the chat!\n')
-    else:
+    if not connection:
         set_error_message('Connecting to the specified server failed!')
+        return
+
+    app['server'].hide_component('connect_button')
+    app['server'].unhide_component('disconnect_button')
+
+    user_name = app.data["username"].get()
+    if len(user_name) > config.MAX_USERNAME_LENGTH:
+        set_error_message('Maximum user name length exceeded '
+                            f'({len(user_name)}/{config.MAX_USERNAME_LENGTH}).')
+        return
+
+    response = util.send_request(connection, head='post/clientname', body=user_name)
+    status = response.get('status')
+    if status == 200:
+        set_status_message('Connected to server.')
+    else:
+        set_error_message('Error setting username on server!')
+    app.data['clients'].append(user_name)
+    _clear_chat_history()
+    app['chat'].activate()
+    app['chat'].repack()
+    get_recurring_server_updates()
+    _append_text_message(text='You have joined the chat!\n')
 
 def disconnect_from_server():
     """Callback for disconnect button"""
