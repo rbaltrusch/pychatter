@@ -10,12 +10,13 @@ import socket
 import threading
 from abc import ABC
 from dataclasses import dataclass
+from typing import Any
 from typing import Dict
 
 class HttpMessage(ABC): #pylint: disable=too-few-public-methods
     """Encodable HttMessage that can be sent over a socket connection"""
 
-    def encode(self) -> str:
+    def encode(self) -> bytes:
         """Encodes the message and returns it"""
         return str.encode(json.dumps(self.__dict__))
 
@@ -23,8 +24,8 @@ class HttpMessage(ABC): #pylint: disable=too-few-public-methods
 class Response(HttpMessage):
     """Response class"""
 
-    status: str
-    body: str = ""
+    status: int
+    body: Any = ""
 
 @dataclass
 class Request(HttpMessage):

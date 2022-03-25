@@ -35,4 +35,4 @@ CHECKBOX_THEME = {**BUTTON_THEME, **LABEL_THEME, 'selectcolor': BG5}
 
 STATUS_THEME = {'fg': FG, 'bg': BG, 'highlightbackground': BG, 'highlightcolor': BG,
                 'state': 'disabled', 'disabledbackground': BG, 'highlightthickness': 0, 'bd': 0}
-ERROR_STATUS_THEME = {**STATUS_THEME, 'fg': ERR, 'disabledforeground': ERR}
+ERROR_STATUS_THEME = {**STATUS_THEME, 'fg': ERR, 'disabledforeground': ERR} # type: ignore

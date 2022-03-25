@@ -101,13 +101,13 @@ def update_username(*_):
         return
 
     #inform server
-    request = util.Request('put', body=f'clientname;{new_username}')
+    request = util.Request('put/clientname', body=new_username)
     response_str = connection.send(request.encode())
     response = util.parse_json_str(response_str)
     status = response.get('status')
     if status == 200:
         set_status_message('Successfully updated username!')
-        *_, old_username = response.split(';')
+        old_username = response['body']
     else:
         set_error_message('Failed to update username on server!')
         old_username = None #get from server
@@ -144,7 +144,7 @@ def _get_updated_list_of_clients_from_server():
         set_error_message('Disconnected from server.')
         return
 
-    request = util.Request('get', body='clients')
+    request = util.Request('get/clients')
     response_bytes = connection.send(request.encode())
     response = util.parse_json_str(response_bytes)
     status = response.get('status')
@@ -174,7 +174,7 @@ def _get_updated_chat_from_server():
         set_error_message('Disconnected from server.')
         return
 
-    request = util.Request('get', body='chat')
+    request = util.Request('get/chat')
     response_str = connection.send(request.encode())
     response = util.parse_json_str(response_str)
     status = response.get('status')
@@ -241,7 +241,7 @@ def send_message(*_):
         chat_message_d = {'text': text, 'userid': connection.id, 'timestamp': timestamp}
         chat_message = json.dumps(chat_message_d)
 
-        request = util.Request('post', body=f'chatmessage;{chat_message}')
+        request = util.Request('post/chatmessage', body=chat_message)
         response_bytes = connection.send(request.encode())
         response = util.parse_json_str(response_bytes)
         status = response.get('status')
@@ -278,8 +278,7 @@ def connect_to_server(*_):
                               f'({len(user_name)}/{config.MAX_USERNAME_LENGTH}).')
             return
 
-        body = f'clientname;{user_name}'
-        request = util.Request('post', body)
+        request = util.Request('post/clientname', body=user_name)
         response_bytes = connection.send(request.encode())
         response = util.parse_json_str(response_bytes)
         status = response.get('status')
