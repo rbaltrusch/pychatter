@@ -24,14 +24,14 @@ class Response(HttpMessage):
     """Response class"""
 
     status: str
-    body: str
+    body: str = ""
 
 @dataclass
 class Request(HttpMessage):
     """Request class"""
 
     head: str
-    body: str
+    body: str = ""
 
 def parse_json_str(decoded: str) -> Dict:
     """Returns dict of specified string if possible, else empty dict"""
