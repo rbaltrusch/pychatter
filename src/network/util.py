@@ -42,33 +42,6 @@ def parse_json_str(decoded: str) -> Dict:
         dict_ = {}
     return dict_
 
-class KillableThread(threading.Thread):
-    """source: https://stackoverflow.com/questions/323972/is-there-any-way-to-kill-a-thread#:~:text=In%20Python%2C%20you%20simply%20cannot,yourProcess.""" #pylint: disable=line-too-long
-
-    def __init__(self, func, sleep_interval=1):
-        super().__init__()
-        self.func = func
-        self._kill = threading.Event()
-        self._interval = sleep_interval
-
-    def run(self):
-        """Runs the thread function until KillableThread.kill method gets called"""
-        while True:
-            self.func()
-
-            # If no kill signal is set, sleep for the interval,
-            # If kill signal comes in while sleeping, immediately
-            #  wake up and handle
-            is_killed = self._kill.wait(self._interval)
-            if is_killed:
-                break
-
-        print("Killing Thread")
-
-    def kill(self):
-        """Kills the thread. This will break the KillableThread.run while loop."""
-        self._kill.set()
-
 def get_timestamp() -> str:
     """Returns a timestamp string of the current time with 1s resolution"""
     time_ = datetime.datetime.now()
