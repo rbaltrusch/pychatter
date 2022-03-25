@@ -113,15 +113,16 @@ def threaded_client(conn, response_functions: Dict[str, Callable]):
         print(f"Sending : {response}")
         conn.sendall(response.encode())
 
-    print("Lost connection")
+    print(f"Lost connection, {killed=}", end="\n\n")
     conn.close()
     clients.pop(new_client_id, None)
     print(clients, chat)
 
 def init():
     """Initialises the server"""
-    global socket_
+    global socket_, killed
     print("Waiting for a connection, Server Started")
+    killed = False
     socket_ = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     socket_.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     try:
