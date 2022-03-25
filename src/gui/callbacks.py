@@ -35,6 +35,9 @@ def set_status_message(message):
 
 def set_error_message(message):
     """Sets the text of the error entry to the specified message"""
+    if app.data["error"].get() == message:
+        return
+
     app.data["error"].set(message)
     app["status"].hide_component("status_entry")
     app["status"].unhide_component("error_entry")
@@ -49,7 +52,7 @@ def update_message_length(*_, reset=False):
     app.data["message_length"].set(len(text))
 
     message = "Exceeded maximum message length!"
-    if len(text) > config.MAX_MESSAGE_LENGTH and not app.data["error"].get() == message:
+    if len(text) > config.MAX_MESSAGE_LENGTH:
         set_error_message(message)
     else:
         app["chat"]["send_button"].config(bg=config.BG2)
