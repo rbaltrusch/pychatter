@@ -60,10 +60,9 @@ def update_message_length(*_, reset=False):
 
 def update_username_button(*_):
     """Updates the colour of the username button, depending on the validity of the username"""
-    if len(app.data["username"].get()) > config.MAX_USERNAME_LENGTH:
-        app["server"]["update_button"].config(bg=config.ERR)
-    else:
-        app["server"]["update_button"].config(bg=config.BG2)
+    username_too_long = len(app.data["username"].get()) > config.MAX_USERNAME_LENGTH
+    colour = config.ERR if username_too_long else config.BG2
+    app["server"]["update_button"].config(bg=colour)
 
 
 def focus(event):
