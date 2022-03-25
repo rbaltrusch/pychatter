@@ -52,7 +52,7 @@ class Tk(tk.Tk):
     def _set_taskbar_icon():
         """Required to set taskbar icon for windows, otherwise the tkinter window
         is recognized by windows as being grouped together with python.exe.
-        See: https://stackoverflow.com/questions/1551605/how-to-set-applications-taskbar-icon-in-windows-7/1552105
+        See: https://stackoverflow.com/questions/1551605/how-to-set-applications-taskbar-icon-in-windows-7/1552105 # pylint: disable=line-too-long
         """
         if sys.platform.startswith("win32"):
             myappid = "mycompany.myproduct.subproduct.version"  # arbitrary string
@@ -179,6 +179,7 @@ class View:
         return {**self._components, **self._frame_components}
 
 
+# pylint: disable=too-many-instance-attribute
 @dataclass
 class Component:
     """Wrapper class around tk widgets that holds all information required
