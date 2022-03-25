@@ -7,6 +7,8 @@ Created on Sat Jan 30 15:08:31 2021
 import ctypes
 import sys
 import tkinter as tk
+from dataclasses import dataclass
+from typing import Any
 
 
 class Tk(tk.Tk):
@@ -177,34 +179,23 @@ class View:
         return {**self._components, **self._frame_components}
 
 
-# pylint: disable=R0902,R0913
+@dataclass
 class Component:
     """Wrapper class around tk widgets that holds all information required
     for grid manager, which allows adding or removing widgets from grid easily
     """
 
-    def __init__(
-        self,
-        tk_component,
-        row=0,
-        column=0,
-        sticky="n",
-        padx=0,
-        pady=0,
-        column_span=1,
-        row_span=1,
-        var=None,
-    ):
-        self.tk_component = tk_component
-        self.row = row
-        self.column = column
-        self.sticky = sticky
-        self.padx = padx
-        self.pady = pady
-        self.column_span = column_span
-        self.row_span = row_span
+    tk_component: Any
+    row: int = 0
+    column: int = 0
+    sticky: str = "n"
+    padx: int = 0
+    pady: int = 0
+    column_span: int = 1
+    row_span: int = 1
+
+    def __post_init__(self):
         self.hidden = False
-        self.var = var
         self.data = None
 
     def hide(self):
