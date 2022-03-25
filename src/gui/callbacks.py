@@ -78,14 +78,16 @@ def host_server(*_):
             target=server.run_forever, daemon=True
         )
         app.data["server_thread"].start()
-        ip_address = util.get_host_ip()
-        app.data["server_ip"].set(ip_address)
-        set_status_message(f"Successfully hosted server. IP: {ip_address}")
-        app.data["hosting"].set(f"Hosting. IP: {ip_address}.")
-        app["server"].hide_component("host_button")
-        app["server"].unhide_component("unhost_button")
     except Exception:  # pylint: disable=broad-except
         set_error_message("Failed to host server!")
+        return
+
+    ip_address = util.get_host_ip()
+    app.data["server_ip"].set(ip_address)
+    set_status_message(f"Successfully hosted server. IP: {ip_address}")
+    app.data["hosting"].set(f"Hosting. IP: {ip_address}.")
+    app["server"].hide_component("host_button")
+    app["server"].unhide_component("unhost_button")
 
 
 def unhost_server(*_):
@@ -93,12 +95,14 @@ def unhost_server(*_):
     try:
         if server.socket_:
             server.socket_.close()
-        app.data["hosting"].set("")
-        app["server"].hide_component("unhost_button")
-        app["server"].unhide_component("host_button")
-        set_status_message("Successfully unhosted.")
     except Exception as exc:  # pylint: disable=broad-except
         print(exc)
+        return
+
+    app.data["hosting"].set("")
+    app["server"].hide_component("unhost_button")
+    app["server"].unhide_component("host_button")
+    set_status_message("Successfully unhosted.")
 
 
 def update_username(*_):
