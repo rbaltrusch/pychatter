@@ -35,6 +35,7 @@ def init_root():
 
     #set trace callbacks
     root.bind_all("<Button-1>", callbacks.focus)
+    root.bind('<Return>', callbacks.send_message)
     app.data['error'].trace_add('write', callbacks.set_error)
     app.data['username'].trace_add('write', callbacks.update_username_button)
 

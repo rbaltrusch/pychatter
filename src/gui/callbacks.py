@@ -6,6 +6,7 @@ Created on Sat Jan 30 15:17:38 2021
 """
 import datetime
 import json
+import re
 import socket
 import threading
 import tkinter as tk
@@ -261,8 +262,9 @@ def send_message(*_):
         return
 
     text = app["chat"]["chat_window"].tk_component.get("1.0", tk.END)
+    message = re.sub("\s+$", "\n", text) #trim trailing whitespace
     timestamp = util.get_timestamp()
-    chat_message_d = {"text": text, "userid": connection.id, "timestamp": timestamp}
+    chat_message_d = {"text": message, "userid": connection.id, "timestamp": timestamp}
     chat_message = json.dumps(chat_message_d)
 
     response = util.send_request(connection, head="post/chatmessage", body=chat_message)
@@ -272,9 +274,9 @@ def send_message(*_):
         return
 
     user_name = app.data["username"].get()
-    _append_formatted_text_message(text, timestamp, user_name)
+    _append_formatted_text_message(message, timestamp, user_name)
     app.data["chat"].append(
-        {"text": text, "username": user_name, "timestamp": timestamp}
+        {"text": message, "username": user_name, "timestamp": timestamp}
     )
     app["chat"]["chat_window"].tk_component.delete("1.0", tk.END)  # delete all contents
     update_message_length(reset=True)
