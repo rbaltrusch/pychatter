@@ -192,7 +192,6 @@ def _get_updated_chat_from_server():
 
     response = util.send_request(connection, head="get/chat")
     status = response.get("status")
-    print(response)
     if status != 200:
         set_error_message("Could not get chat updates from the server.")
         return
