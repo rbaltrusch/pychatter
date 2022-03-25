@@ -21,6 +21,15 @@ To install all python dependencies, run the following in your command line:
 
     python -m pip install -r requirements.txt
 
+### Tests
+
+To run tests, change to the tests directory, then run run_tests.py:
+
+```
+cd tests
+python run_tests.py
+```
+
 ## Contributions
 
 To contribute to this repository, please read the [contribution guidelines](CONTRIBUTING.md).

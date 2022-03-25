@@ -1,0 +1,7 @@
+# .coveragerc to control coverage.py (pytest-cov)
+
+[run]
+omit =
+    ../src/main.py,
+    ../src/run_server.py,
+    ../src/gui/*

@@ -121,7 +121,7 @@ def update_username(*_):
         return
 
     # inform server
-    response = util.send_request(connection, head="put/clientname", body=new_username)
+    response = connection.send_request(head="put/clientname", body=new_username)
     status = response.get("status")
     if status == 200:
         set_status_message("Successfully updated username!")
@@ -165,7 +165,7 @@ def _get_updated_list_of_clients_from_server():
         set_error_message("Disconnected from server.")
         return
 
-    response = util.send_request(connection, head="get/clients")
+    response = connection.send_request(head="get/clients")
     status = response.get("status")
     if status != 200:
         set_error_message("Could not get an updated list of clients from the server.")
@@ -190,7 +190,7 @@ def _get_updated_chat_from_server():
         set_error_message("Disconnected from server.")
         return
 
-    response = util.send_request(connection, head="get/chat")
+    response = connection.send_request(head="get/chat")
     status = response.get("status")
     if status != 200:
         set_error_message("Could not get chat updates from the server.")
@@ -266,7 +266,7 @@ def send_message(*_):
     chat_message_d = {"text": message, "userid": connection.id, "timestamp": timestamp}
     chat_message = json.dumps(chat_message_d)
 
-    response = util.send_request(connection, head="post/chatmessage", body=chat_message)
+    response = connection.send_request(head="post/chatmessage", body=chat_message)
     status = response.get("status")
     if status != 200:
         set_error_message("Server error occured on sending the chat message.")
@@ -310,7 +310,7 @@ def connect_to_server(*_):
         )
         return
 
-    response = util.send_request(connection, head="post/clientname", body=user_name)
+    response = connection.send_request(head="post/clientname", body=user_name)
     status = response.get("status")
     if status == 200:
         set_status_message("Connected to server.")
