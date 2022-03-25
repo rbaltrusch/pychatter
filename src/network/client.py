@@ -5,6 +5,9 @@ Created on Sun May 16 18:46:57 2021
 @author: Korean_Crimson
 """
 import socket
+from typing import Any
+from typing import Dict
+from typing import Optional
 
 import network.config
 import network.util
@@ -20,7 +23,7 @@ class NetworkConnection:
         response = network.util.parse_json_str(response_str)
         self.id = response.get('body') #pylint: disable=invalid-name
 
-    def connect(self):
+    def connect(self) -> Optional[bytes]:
         """Sends its address to the server and receives the server response"""
         try:
             self.socket.connect(self.addr)
@@ -29,17 +32,17 @@ class NetworkConnection:
             print(f'failed: {str(exc)}')
         return None
 
-    def send(self, data):
+    def send(self, data: bytes) -> Optional[str]:
         """Sends the data (bytes) and returns the server response (str)"""
         try:
+            print(data)
             self.socket.send(data)
             return self.socket.recv(network.config.CHUNKSIZE).decode()
         except socket.error as exc:
-            self.id = None
-            print(exc)
+            print(f"Socket error {exc}")
         return None
 
-    def close(self):
+    def close(self) -> None:
         """Closes the socket connection"""
         self.socket.close()
         self.id = None
