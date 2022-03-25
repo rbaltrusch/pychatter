@@ -7,7 +7,7 @@ LocalChat is a direct chat tool, which may be run to communicate over a local ne
 
 ![Gif of the application GUI](https://github.com/rbaltrusch/LocalChat/blob/master/src/gui/media/gif1.gif?raw=true "Gif of the application GUI")
 
-Communication happens over the localhost port 5555, which is typically a free port to use.
+Communication happens over the localhost port 8080.
 
 This is primarily an exercise in duplex client-server communication using websockets.
 
