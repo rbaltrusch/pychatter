@@ -42,6 +42,12 @@ def parse_json_str(decoded: str) -> Dict:
         dict_ = {}
     return dict_
 
+def send_request(connection, head="", body="") -> Dict[str, Any]:
+    """Sends a request with given head and body and returns the server response"""
+    request = Request(head, body)
+    response_bytes = connection.send(request.encode())
+    return parse_json_str(response_bytes)
+
 def get_timestamp() -> str:
     """Returns a timestamp string of the current time with 1s resolution"""
     time_ = datetime.datetime.now()

@@ -101,9 +101,7 @@ def update_username(*_):
         return
 
     #inform server
-    request = util.Request('put/clientname', body=new_username)
-    response_str = connection.send(request.encode())
-    response = util.parse_json_str(response_str)
+    response = util.send_request(connection, head='put/clientname', body=new_username)
     status = response.get('status')
     if status == 200:
         set_status_message('Successfully updated username!')
@@ -144,9 +142,7 @@ def _get_updated_list_of_clients_from_server():
         set_error_message('Disconnected from server.')
         return
 
-    request = util.Request('get/clients')
-    response_bytes = connection.send(request.encode())
-    response = util.parse_json_str(response_bytes)
+    response = util.send_request(connection, head='get/clients')
     status = response.get('status')
     if status == 200:
         previous_clients = app.data['clients']
@@ -174,9 +170,7 @@ def _get_updated_chat_from_server():
         set_error_message('Disconnected from server.')
         return
 
-    request = util.Request('get/chat')
-    response_str = connection.send(request.encode())
-    response = util.parse_json_str(response_str)
+    response = util.send_request(connection, head='get/chat')
     status = response.get('status')
     print(response)
     if status == 200:
@@ -241,9 +235,7 @@ def send_message(*_):
         chat_message_d = {'text': text, 'userid': connection.id, 'timestamp': timestamp}
         chat_message = json.dumps(chat_message_d)
 
-        request = util.Request('post/chatmessage', body=chat_message)
-        response_bytes = connection.send(request.encode())
-        response = util.parse_json_str(response_bytes)
+        response = util.send_request(connection, head='post/chatmessage', body=chat_message)
         status = response.get('status')
         if status == 200:
             user_name = app.data["username"].get()
@@ -278,9 +270,7 @@ def connect_to_server(*_):
                               f'({len(user_name)}/{config.MAX_USERNAME_LENGTH}).')
             return
 
-        request = util.Request('post/clientname', body=user_name)
-        response_bytes = connection.send(request.encode())
-        response = util.parse_json_str(response_bytes)
+        response = util.send_request(connection, head='post/clientname', body=user_name)
         status = response.get('status')
         if status == 200:
             set_status_message('Connected to server.')
