@@ -40,6 +40,10 @@ class ConnectionClosedException(Exception):
     """Exception to be throw for closed sockets"""
 
 
+class ServerStartupException(Exception):
+    """Exception to be thrown if server cannot startup in init"""
+
+
 class Client:
     """Client contextmanager, adds new client ids when entered and removes them on exit"""
 
@@ -202,8 +206,9 @@ def init():
     try:
         socket_.bind((ip_address, config.PORT))
         socket_.listen(config.MAX_CLIENTS)
-    except socket.error as exc:
+    except (socket.error, OverflowError) as exc:
         logging.exception("Could not initialise socket", exc_info=exc)
+        raise ServerStartupException from exc
 
 
 def run():
