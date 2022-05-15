@@ -195,8 +195,3 @@ def kill():
     """Kills the server."""
     global killed
     killed = True
-
-
-if __name__ == "__main__":
-    init()
-    run()
