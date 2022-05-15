@@ -5,6 +5,8 @@ Created on Thu Jan 27 17:15:08 2022
 @author: richa
 """
 
+import logging
+
 
 class SocketCleanup:
     """Context manager for socket cleanup. Takes a list of getter functions that
@@ -22,11 +24,15 @@ class SocketCleanup:
             try:
                 connection = func()
             except TypeError:
-                print("Invalid cleanup function. Does not run with no parameters")
+                logging.error(
+                    "Invalid cleanup function. Does not run with no parameters"
+                )
                 continue
 
             if connection:
                 try:
                     connection.close()
                 except Exception as exc:  # pylint: disable=broad-except
-                    print(f"Failed to cleanup socket connection: {str(exc)}")
+                    logging.exception(
+                        "Failed to cleanup socket connection", exc_info=exc
+                    )
