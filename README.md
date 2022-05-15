@@ -22,6 +22,10 @@ To install all python dependencies, run the following in your command line:
 
     python -m pip install -r requirements.txt
 
+To run the application, run the package from the root repository directory:
+
+    python -m localchat
+
 ### Tests
 
 To run tests, change to the tests directory, then run run_tests.py:
