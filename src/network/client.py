@@ -12,6 +12,7 @@ from typing import Optional
 import network.config
 import network.util
 
+
 class NetworkConnection:
     """Class used to connect to the server"""
 
@@ -21,7 +22,7 @@ class NetworkConnection:
         self.addr = (ip_address, network.config.PORT)
         response_str = self.connect()
         response = network.util.parse_json_str(response_str)
-        self.id = response.get('body') #pylint: disable=invalid-name
+        self.id = response.get("body")  # pylint: disable=invalid-name
 
     def connect(self) -> Optional[bytes]:
         """Sends its address to the server and receives the server response"""
@@ -29,7 +30,7 @@ class NetworkConnection:
             self.socket.connect(self.addr)
             return self.socket.recv(network.config.CHUNKSIZE).decode()
         except socket.error as exc:
-            print(f'failed: {str(exc)}')
+            print(f"failed: {str(exc)}")
         return None
 
     def send_request(self, head="", body="") -> Dict[str, Any]:

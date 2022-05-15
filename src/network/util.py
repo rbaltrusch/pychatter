@@ -9,15 +9,16 @@ import json
 import socket
 from abc import ABC
 from dataclasses import dataclass
-from typing import Any
-from typing import Dict
+from typing import Any, Dict
 
-class HttpMessage(ABC): #pylint: disable=too-few-public-methods
+
+class HttpMessage(ABC):  # pylint: disable=too-few-public-methods
     """Encodable HttMessage that can be sent over a socket connection"""
 
     def encode(self) -> bytes:
         """Encodes the message and returns it"""
         return str.encode(json.dumps(self.__dict__))
+
 
 @dataclass
 class Response(HttpMessage):
@@ -26,12 +27,14 @@ class Response(HttpMessage):
     status: int
     body: Any = ""
 
+
 @dataclass
 class Request(HttpMessage):
     """Request class"""
 
     head: str
     body: str = ""
+
 
 def parse_json_str(decoded: str) -> Dict:
     """Returns dict of specified string if possible, else empty dict"""
@@ -41,10 +44,12 @@ def parse_json_str(decoded: str) -> Dict:
         dict_ = {}
     return dict_
 
+
 def get_timestamp() -> str:
     """Returns a timestamp string of the current time with 1s resolution"""
     time_ = datetime.datetime.now()
-    return time_.strftime('%H:%M:%S')
+    return time_.strftime("%H:%M:%S")
+
 
 def get_host_ip():
     """Returns the ip address of the current host"""

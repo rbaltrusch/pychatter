@@ -9,4 +9,4 @@ PORT = 8080
 CHUNKSIZE = 2048
 MAX_CLIENTS = 2
 MAX_CHAT_RESP = 5
-TIMEOUT = 5 #seconds
+TIMEOUT = 5  # seconds
