@@ -32,6 +32,64 @@ class DecodeError(Exception):
     """Exception to be thrown when received messages cannot be decoded"""
 
 
+class DisconnectionException(Exception):
+    """Exception to be thrown when clients disconnect from a Connection"""
+
+
+class ConnectionClosedException(Exception):
+    """Exception to be throw for closed sockets"""
+
+
+class Client:
+    """Client contextmanager, adds new client ids when entered and removes them on exit"""
+
+    def __init__(self):
+        self.client_id = None
+
+    def __enter__(self):
+        self.client_id = str(uuid.uuid4())
+        clients[self.client_id] = f"user{self.client_id[:7]}"
+        return self.client_id
+
+    def __exit__(self, *_):
+        clients.pop(self.client_id, None)
+
+
+class Connection:
+    """Connection context manager, sends the new client id to every client on enter
+    and closes the socket on exit.
+    """
+
+    def __init__(self, connection: socket.socket, client_id: str):
+        self._conn = connection
+        self.client_id = client_id
+
+    def __enter__(self):
+        response = Response(200, body=self.client_id)
+        self._conn.sendall(response.encode())
+        return self
+
+    def __exit__(self, *_):
+        logging.info("Lost connection. Killed = %s/n/n", killed)
+        self._conn.close()
+
+    def handle(self, response_functions: Dict[str, ResponseFunction]) -> None:
+        """Handles the connection using the response_functions provided"""
+        data = self._conn.recv(network.config.CHUNKSIZE)
+        if not data:
+            logging.info("Disconnected")
+            raise DisconnectionException
+
+        try:
+            message = decode_message(data)
+        except DecodeError:
+            return
+
+        response = determine_response(message, self.client_id, response_functions)
+        logging.info("Sending %s", response)
+        self._conn.sendall(response.encode())
+
+
 def decode_message(data: bytes) -> Dict[str, Any]:
     """Decodes encoded json data into string"""
     decoded = data.decode("utf-8")
@@ -125,32 +183,11 @@ def threaded_client(conn):
     terminated. Currently sends back the data received to all clients, unless
     the data received is equal to 'get', in which case it sends the last reply.
     """
-
     response_functions = get_responses_functions()
-
-    new_client_id = str(uuid.uuid4())
-    clients[new_client_id] = f"user{new_client_id[:7]}"
-    response = Response(200, body=new_client_id)
-    conn.sendall(response.encode())
-
-    while not killed:
-        data = conn.recv(network.config.CHUNKSIZE)
-        if not data:
-            print("Disconnected")
-            break
-
-        try:
-            message = decode_message(data)
-        except DecodeError:
-            continue
-
-        response = determine_response(message, new_client_id, response_functions)
-        print(f"Sending : {response}")
-        conn.sendall(response.encode())
-
-    print(f"Lost connection, {killed=}", end="\n\n")
-    conn.close()
-    clients.pop(new_client_id, None)
+    with Client() as new_client_id:
+        with Connection(conn, new_client_id) as connection:
+            while not killed:
+                connection.handle(response_functions)
 
 
 def init():
