@@ -26,6 +26,10 @@ To run the application, run the package from the root repository directory:
 
     python -m localchat
 
+Hosting a chat server can be done directly inside the graphical user interface, or a dedicated server may be started from the command line using:
+
+    python -m localchat --server
+
 ## Configuration
 
 The chat application supports external configuration files. Place a file named config.json in the directory from which the application is run.
