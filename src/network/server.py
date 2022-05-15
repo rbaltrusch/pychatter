@@ -184,12 +184,11 @@ def run():
 
 def run_forever():
     """Runs the server until it is killed"""
-    while True:
+    while not killed:
         run()
-        if killed:
-            if socket_:
-                socket_.close()
-            break
+
+    if socket_:
+        socket_.close()
 
 
 def kill():
