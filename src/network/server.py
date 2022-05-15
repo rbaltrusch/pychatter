@@ -102,6 +102,24 @@ def get_responses_functions() -> Dict[str, ResponseFunction]:
     }
 
 
+def determine_response(
+    message: Dict[str, Any],
+    client_id: str,
+    response_functions: Dict[str, ResponseFunction],
+) -> Response:
+    """Returns a response by looking up the message head from the specified response_functions
+    Returns an invalid request response if a valid response function cannot be found.
+    """
+    head = message["head"].lower().strip()
+    response_function = response_functions.get(head)
+    response = (
+        Response(400, body="Invalid request")
+        if response_function is None
+        else response_function(message, client_id)
+    )
+    return response
+
+
 def threaded_client(conn):
     """Tries to receive data from the client connection until the connection is
     terminated. Currently sends back the data received to all clients, unless
@@ -125,15 +143,8 @@ def threaded_client(conn):
             message = decode_message(data)
         except DecodeError:
             continue
-        print("Received", message)
 
-        head = message["head"].lower().strip()
-        response_function = response_functions.get(head)
-        if response_function is None:
-            response = Response(400, body="Invalid request")
-        else:
-            response = response_function(message, new_client_id)
-
+        response = determine_response(message, new_client_id, response_functions)
         print(f"Sending : {response}")
         conn.sendall(response.encode())
 
