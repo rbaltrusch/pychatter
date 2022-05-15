@@ -26,6 +26,23 @@ To run the application, run the package from the root repository directory:
 
     python -m localchat
 
+## Configuration
+
+The chat application supports external configuration files. Place a file named config.json in the directory from which the application is run.
+
+The configuration file currently supports one setting, `"chat_format"`, which is used to display chat messages. It supports the following placeholder strings:
+
+- `%T`: time
+- `%U`: user name
+- `%M`: message
+
+An example config.json could contain the following data:
+```json
+{
+	"chat_format": "%T: %U: %M"
+}
+```
+
 ### Tests
 
 To run tests, change to the tests directory, then run run_tests.py:
