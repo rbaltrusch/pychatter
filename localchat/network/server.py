@@ -187,11 +187,9 @@ def threaded_client(conn):
     terminated. Currently sends back the data received to all clients, unless
     the data received is equal to 'get', in which case it sends the last reply.
     """
-    response_functions = get_responses_functions()
-    with Client() as new_client_id:
-        with Connection(conn, new_client_id) as connection:
-            while not killed:
-                connection.handle(response_functions)
+    with Client() as new_client_id, Connection(conn, new_client_id) as connection:
+        while not killed:
+            connection.handle(response_functions=get_responses_functions())
 
 
 def init():
