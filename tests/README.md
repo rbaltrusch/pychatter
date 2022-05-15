@@ -12,6 +12,15 @@ Run tests using the run_tests.py module:
     cd tests
     python run_tests.py
 
+# Code coverage
+
+Code coverage does not work correctly for all threads running pytest directly. Instead, run coverage using the following commands:
+
+```
+python -m coverage run --concurrency=thread --rcfile .coveragerc -m py.test
+python -m coverage report -m
+```
+
 ## Options
 
 A number of other options are available:
