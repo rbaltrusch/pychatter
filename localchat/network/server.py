@@ -201,7 +201,9 @@ def init():
     logging.info("Waiting for a connection, server started")
     killed = False
     socket_ = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    socket_.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    socket_.setsockopt(
+        socket.SOL_SOCKET, socket.SO_REUSEADDR, 1
+    )  # unblock address immediately once socket is closed
     ip_address = get_host_ip()
     logging.info("Hosting server on: %s", ip_address)
     try:

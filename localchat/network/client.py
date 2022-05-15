@@ -20,6 +20,9 @@ class NetworkConnection:
 
     def __init__(self, ip_address, timeout=5):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.socket.setsockopt(
+            socket.SOL_SOCKET, socket.SO_REUSEADDR, 1
+        )  # unblock address immediately once socket is closed
         self.socket.settimeout(timeout)
         self.address = (ip_address, config.PORT)
         self.id = None  # pylint: disable=invalid-name
