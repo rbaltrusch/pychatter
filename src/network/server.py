@@ -6,6 +6,7 @@ Created on Sun May 16 18:46:57 2021
 """
 import datetime
 import json
+import logging
 import socket
 import uuid
 from _thread import start_new_thread
@@ -25,13 +26,19 @@ chat: List[Dict[str, str]] = []
 killed = False
 
 
+class DecodeError(Exception):
+    """Exception to be thrown when received messages cannot be decoded"""
+
+
 def decode_message(data: bytes) -> Dict[str, Any]:
     """Decodes encoded json data into string"""
     decoded = data.decode("utf-8")
     try:
         message = json.loads(decoded)
-    except json.JSONDecodeError:
-        message = None
+    except json.JSONDecodeError as exc:
+        logging.info("Message in wrong format!")
+        raise DecodeError from exc
+    logging.info("Received %s", message)
     return message
 
 
@@ -112,9 +119,9 @@ def threaded_client(conn):
             print("Disconnected")
             break
 
-        message = decode_message(data)
-        if message is None:
-            print("Message in wrong format!")
+        try:
+            message = decode_message(data)
+        except DecodeError:
             continue
         print("Received", message)
 
