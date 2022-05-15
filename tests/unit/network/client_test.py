@@ -25,6 +25,11 @@ class ServerSocket:
         server.kill()
 
 
+def teardown():
+    if server.socket_:
+        server.socket_.close()
+
+
 @pytest.mark.parametrize("ip_address", ["localhost", "127.0.0.1"])
 def test_network_connection_fail(ip_address):
     with pytest.raises(client.StartConnectionError):

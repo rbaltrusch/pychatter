@@ -13,6 +13,11 @@ from localchat.network import client, server, util
 server_thread = None
 
 
+def teardown():
+    if server.socket_:
+        server.socket_.close()
+
+
 class ServerConnection:
     def __init__(self):
         self.connection = None
