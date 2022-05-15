@@ -285,8 +285,9 @@ def connect_to_server(*_):
         set_error_message("Please enter an IP address!")
         return
 
+    connection = client.NetworkConnection(ip_address)
     try:
-        connection = client.NetworkConnection(ip_address)
+        connection.connect()
     except socket.timeout:
         set_error_message("Connection timed out.")
 
