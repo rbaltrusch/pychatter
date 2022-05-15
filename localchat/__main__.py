@@ -4,8 +4,8 @@ Created on Mon May 10 00:12:31 2021
 
 @author: Korean_Crimson
 """
-from gui import app, init
-from network import cleanup, server
+from localchat.gui import app, init
+from localchat.network import cleanup, server
 
 init.init()
 app.pack_all()

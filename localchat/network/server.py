@@ -12,9 +12,9 @@ import uuid
 from _thread import start_new_thread
 from typing import Any, Callable, Dict, List
 
-import network.config
-from network.config import MAX_CHAT_RESP
-from network.util import Response, get_host_ip, parse_json_str
+from localchat.network import config
+from localchat.network.config import MAX_CHAT_RESP
+from localchat.network.util import Response, get_host_ip, parse_json_str
 
 # pylint: disable=unused-argument
 # pylint: disable=global-statement
@@ -75,7 +75,7 @@ class Connection:
 
     def handle(self, response_functions: Dict[str, ResponseFunction]) -> None:
         """Handles the connection using the response_functions provided"""
-        data = self._conn.recv(network.config.CHUNKSIZE)
+        data = self._conn.recv(config.CHUNKSIZE)
         if not data:
             logging.info("Disconnected")
             raise DisconnectionException
@@ -200,8 +200,8 @@ def init():
     ip_address = get_host_ip()
     logging.info("Hosting on %s", ip_address)
     try:
-        socket_.bind((ip_address, network.config.PORT))
-        socket_.listen(network.config.MAX_CLIENTS)
+        socket_.bind((ip_address, config.PORT))
+        socket_.listen(config.MAX_CLIENTS)
     except socket.error as exc:
         logging.exception("Could not initialise socket", exc_info=exc)
 

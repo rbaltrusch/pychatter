@@ -7,7 +7,8 @@ Created on Sat Jan 30 15:13:17 2021
 
 # pylint: disable=E0611,E0401
 import tkinter as tk
-from gui.components import Tk, Gui
+
+from localchat.gui.components import Gui, Tk
 
 root = Tk()
 app = Gui(root)

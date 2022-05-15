@@ -21,9 +21,9 @@ def run_tests(args):
     """Add package under test to PYTHONPATH, run pytest to generate html report
     and open the report in the browser.
     """
-    script_dir = os.path.abspath(os.path.dirname(__file__))
-    package_path = os.path.join(script_dir, "..", PACKAGE_NAME)
-    sys.path.append(package_path)
+    package_path = os.path.join(
+        os.path.abspath(os.path.dirname(__file__)), "..", PACKAGE_NAME
+    )
 
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
     report_filename = f"{timestamp}_report.html"

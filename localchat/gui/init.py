@@ -10,12 +10,8 @@ import json
 import os
 import tkinter as tk
 
-from gui import app
-from gui import callbacks
-from gui import components
-from gui import config
-from gui import root
-from gui.text import CustomText
+from localchat.gui import app, callbacks, components, config, root
+from localchat.gui.text import CustomText
 
 
 def init():
@@ -53,9 +49,7 @@ def init_config():
     """Read config from config file, if present"""
     if os.path.isfile(config.CONFIG_FILENAME):
         try:
-            with open(
-                config.CONFIG_FILENAME, "r"
-            ) as file:  # pylint: disable=unspecified-encoding
+            with open(config.CONFIG_FILENAME, "r", encoding="utf-8") as file:
                 dict_ = json.load(file)
         except (PermissionError, json.decoder.JSONDecodeError):
             dict_ = {}

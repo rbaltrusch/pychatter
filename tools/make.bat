@@ -14,6 +14,6 @@ call "%pyinstaller_path%" --onedir --noupx --icon src/gui/media/icon.ico --exclu
 
 echo v| xcopy /s /v /y "src/gui/media" "dist/main/gui/media"
 call "tools/link.vbs" "dist/LocalChat.lnk" "dist/main/main.exe"
-copy "src\config.json" "dist"
+copy "config.json" "dist"
 copy "README.md" "dist"
 copy "LICENSE" "dist"
