@@ -2,6 +2,8 @@
 
 [run]
 omit =
-    ../src/main.py,
+    ../localchat/__main__.py,
     ../src/run_server.py,
-    ../src/gui/*
+    ../src/gui/*,
+    unit/*,
+    conftest.py
