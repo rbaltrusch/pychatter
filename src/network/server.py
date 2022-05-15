@@ -20,6 +20,8 @@ from network.util import Response, get_host_ip, parse_json_str
 # pylint: disable=global-statement
 # pylint: disable=invalid-name
 
+ResponseFunction = Callable[[Dict[str, Any], str], Response]
+
 socket_ = None
 clients: Dict[str, str] = {}
 chat: List[Dict[str, str]] = []
@@ -47,7 +49,7 @@ def get_clients_response(message: Dict[str, Any], client_id: str) -> Response:
     return Response(200, list(clients.values()))
 
 
-def get_chat_response(message: str, client_id: str) -> Response:
+def get_chat_response(message: Dict[str, Any], client_id: str) -> Response:
     """Responds with a list of older chat messages"""
     chat_messages_ = chat[-MAX_CHAT_RESP:] if len(chat) > MAX_CHAT_RESP else chat
     chat_messages = [
@@ -89,7 +91,7 @@ def put_client_name(message: Dict[str, Any], client_id: str) -> Response:
     return Response(200, body="Updated client name;{old_client_name}")
 
 
-def get_responses_functions() -> Dict[str, Callable]:
+def get_responses_functions() -> Dict[str, ResponseFunction]:
     """Returns a mapping of request header to repective function to be called"""
     return {
         "get/clients": get_clients_response,
