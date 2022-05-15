@@ -213,8 +213,8 @@ def run():
     try:
         conn, addr = socket_.accept()
     except socket.error as exc:
-        logging.exception("Caught exception while running server", exc_info=exc)
-        return
+        raise ConnectionClosedException from exc
+
     logging.info("Connected to: %s", addr)
     start_new_thread(threaded_client, (conn,))
 
@@ -222,7 +222,10 @@ def run():
 def run_forever():
     """Runs the server until it is killed"""
     while not killed:
-        run()
+        try:
+            run()
+        except ConnectionClosedException:
+            break
 
     if socket_:
         socket_.close()
