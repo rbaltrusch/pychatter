@@ -151,23 +151,22 @@ def threaded_client(conn):
     print(f"Lost connection, {killed=}", end="\n\n")
     conn.close()
     clients.pop(new_client_id, None)
-    print(clients, chat)
 
 
 def init():
     """Initialises the server"""
     global socket_, killed
-    print("Waiting for a connection, Server Started")
+    logging.info("Waiting for a connection, Server Started")
     killed = False
     socket_ = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     socket_.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    ip_address = get_host_ip()
+    logging.info("Hosting on %s", ip_address)
     try:
-        ip_address = get_host_ip()
-        print(f"Hosting on {ip_address}")
         socket_.bind((ip_address, network.config.PORT))
         socket_.listen(network.config.MAX_CLIENTS)
-    except socket.error as e:
-        str(e)
+    except socket.error as exc:
+        logging.exception("Could not initialise socket", exc_info=exc)
 
 
 def run():
@@ -176,11 +175,11 @@ def run():
     """
     try:
         conn, addr = socket_.accept()
-    except Exception as exc:  # pylint: disable=broad-except
-        print(str(exc))
+    except socket.error as exc:
+        logging.exception("Caught exception while running server", exc_info=exc)
         return
-    print("Connected to:", addr)
-    start_new_thread(threaded_client, (conn))
+    logging.info("Connected to: %s", addr)
+    start_new_thread(threaded_client, (conn,))
 
 
 def run_forever():
