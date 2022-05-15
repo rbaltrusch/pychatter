@@ -74,14 +74,14 @@ class Connection:
         return self
 
     def __exit__(self, *_):
-        logging.info("Lost connection. Killed = %s/n/n", killed)
+        logging.info("Lost connection to client. Killed = %s", killed)
         self._conn.close()
 
     def handle(self, response_functions: Dict[str, ResponseFunction]) -> None:
         """Handles the connection using the response_functions provided"""
         data = self._conn.recv(config.CHUNKSIZE)
         if not data:
-            logging.info("Disconnected")
+            logging.info("Client disconnected: %s", self.client_id)
             raise DisconnectionException
 
         try:
@@ -90,7 +90,7 @@ class Connection:
             return
 
         response = determine_response(message, self.client_id, response_functions)
-        logging.info("Sending %s", response)
+        logging.info("Sending response to all clients: %s", response)
         self._conn.sendall(response.encode())
 
 
@@ -100,9 +100,9 @@ def decode_message(data: bytes) -> Dict[str, Any]:
     try:
         message = json.loads(decoded)
     except json.JSONDecodeError as exc:
-        logging.info("Message in wrong format!")
+        logging.info("Client request in wrong format!")
         raise DecodeError from exc
-    logging.info("Received %s", message)
+    logging.info("Received client request: %s", message)
     return message
 
 
@@ -189,18 +189,21 @@ def threaded_client(conn):
     """
     with Client() as new_client_id, Connection(conn, new_client_id) as connection:
         while not killed:
-            connection.handle(response_functions=get_responses_functions())
+            try:
+                connection.handle(response_functions=get_responses_functions())
+            except DisconnectionException:
+                break
 
 
 def init():
     """Initialises the server"""
     global socket_, killed
-    logging.info("Waiting for a connection, Server Started")
+    logging.info("Waiting for a connection, server started")
     killed = False
     socket_ = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     socket_.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     ip_address = get_host_ip()
-    logging.info("Hosting on %s", ip_address)
+    logging.info("Hosting server on: %s", ip_address)
     try:
         socket_.bind((ip_address, config.PORT))
         socket_.listen(config.MAX_CLIENTS)
@@ -218,7 +221,7 @@ def run():
     except socket.error as exc:
         raise ConnectionClosedException from exc
 
-    logging.info("Connected to: %s", addr)
+    logging.info("Connected to client address: %s", addr)
     start_new_thread(threaded_client, (conn,))
 
 
