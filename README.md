@@ -6,7 +6,7 @@
 
 LocalChat is a direct chat tool, which may be run to communicate over a local network.
 
-![Gif of the application GUI](https://github.com/rbaltrusch/LocalChat/blob/master/src/gui/media/gif1.gif?raw=true "Gif of the application GUI")
+![Gif of the application GUI](https://github.com/rbaltrusch/LocalChat/blob/master/localchat/gui/media/gif1.gif?raw=true "Gif of the application GUI")
 
 Communication happens over the localhost port 8080.
 
