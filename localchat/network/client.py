@@ -18,13 +18,13 @@ class StartConnectionError(Exception):
 class NetworkConnection:
     """Class used to connect to the server"""
 
-    def __init__(self, ip_address, timeout=5):
+    def __init__(self, ip_address, port=config.PORT, timeout=5):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.setsockopt(
             socket.SOL_SOCKET, socket.SO_REUSEADDR, 1
         )  # unblock address immediately once socket is closed
         self.socket.settimeout(timeout)
-        self.address = (ip_address, config.PORT)
+        self.address = (ip_address, port)
         self.id = None  # pylint: disable=invalid-name
 
     def connect(self) -> None:

@@ -195,7 +195,7 @@ def threaded_client(conn):
                 break
 
 
-def init():
+def init(port=config.PORT):
     """Initialises the server"""
     global socket_, killed
     logging.info("Waiting for a connection, server started")
@@ -207,7 +207,7 @@ def init():
     ip_address = get_host_ip()
     logging.info("Hosting server on: %s", ip_address)
     try:
-        socket_.bind((ip_address, config.PORT))
+        socket_.bind((ip_address, port))
         socket_.listen(config.MAX_CLIENTS)
     except (socket.error, OverflowError) as exc:
         logging.exception("Could not initialise socket", exc_info=exc)
