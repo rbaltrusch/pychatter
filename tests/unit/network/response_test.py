@@ -5,6 +5,7 @@ Created on Sat Dec 11 18:29:09 2021
 @author: richa
 """
 import json
+import random
 import threading
 
 import pytest
@@ -24,12 +25,13 @@ class ServerConnection:
         self.server_thread = None
 
     def __enter__(self):
-        server.init()
+        port = random.randint(10000, 65535)
+        server.init(port=port)
         self.server_thread = threading.Thread(target=server.run_forever, daemon=True)
         self.server_thread.start()
 
         ip_address = util.get_host_ip()
-        self.connection = client.NetworkConnection(ip_address)
+        self.connection = client.NetworkConnection(ip_address, port=port)
         self.connection.connect()
         print("id", self.connection.id)
         return self
