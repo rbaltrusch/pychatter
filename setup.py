@@ -9,7 +9,7 @@ project_dir = Path(__file__).parent
 
 setuptools.setup(
     name="LocalChat",
-    version="1.0.0",
+    version="0.1.0",
     description="Local network chat messaging application",
     long_description=project_dir.joinpath("README.md").read_text(encoding="utf-8"),
     long_description_content_type="text/markdown",
