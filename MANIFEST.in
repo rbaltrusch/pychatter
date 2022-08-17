@@ -3,3 +3,4 @@ include LICENSE
 include requirements.txt
 include localchat/py.typed
 recursive-exclude tests *
+exclude config.json
