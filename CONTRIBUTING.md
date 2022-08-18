@@ -23,6 +23,12 @@ If you are using conda, you could setup your development virtual environment usi
 conda env update --file environment.yml --name test-env
 ```
 
+## Tests
+
+Run unit tests from the repository root using pytest:
+
+    pytest tests
+
 ### Github Actions
 
 After pushing to your branch, you should be able to see whether the existing workflows still pass. Make sure that all workflows that passed before your changes are still passing, otherwise your pull request will need to fix those failures first after being submitted.

@@ -14,16 +14,9 @@ This is primarily an exercise in duplex client-server communication using websoc
 
 ## Getting started
 
-To get a copy of this repository, simply open up git bash in an empty folder and use the command:
+Install the pychatter package using pip, then run the package:
 
-    $ git clone https://github.com/rbaltrusch/pychatter
-
-To install all python dependencies, run the following in your command line:
-
-    python -m pip install -r requirements.txt
-
-To run the application, run the package from the root repository directory:
-
+    python -m pip install pychatter
     python -m pychatter
 
 Hosting a chat server can be done directly inside the graphical user interface, or a dedicated server may be started from the command line using:
@@ -47,18 +40,9 @@ An example config.json could contain the following data:
 }
 ```
 
-### Tests
-
-To run tests, change to the tests directory, then run run_tests.py:
-
-```
-cd tests
-python run_tests.py
-```
-
 ## Contributions
 
-To contribute to this repository, please read the [contribution guidelines](CONTRIBUTING.md).
+To contribute to this repository, please read the [contribution guidelines](https://github.com/rbaltrusch/pychatter/blob/master/CONTRIBUTING.md).
 
 ## Python
 
