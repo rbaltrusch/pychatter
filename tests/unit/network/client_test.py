@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """network.client module tests"""
 
+# pylint: disable=missing-function-docstring, missing-class-docstring
+
 import random
 import socket
 import threading

@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """Network.cleanup module tests"""
 
-import pytest
+# pylint: disable=missing-function-docstring, missing-class-docstring
+
 from localchat.network import cleanup
 
 

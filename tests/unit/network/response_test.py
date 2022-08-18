@@ -4,6 +4,9 @@ Created on Sat Dec 11 18:29:09 2021
 
 @author: richa
 """
+
+# pylint: disable=missing-function-docstring, missing-class-docstring
+
 import json
 import random
 import threading

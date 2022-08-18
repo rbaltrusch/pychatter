@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """network.server module tests"""
 
+# pylint: disable=missing-function-docstring, missing-class-docstring
+
 import json
 from dataclasses import dataclass
 from typing import ByteString, Optional

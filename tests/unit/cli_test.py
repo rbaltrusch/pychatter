@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """cli module tests"""
 
+# pylint: disable=missing-function-docstring, missing-class-docstring
+
 from localchat import cli
 
 
