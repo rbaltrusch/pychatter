@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from typing import ByteString, Optional
 
 import pytest
-from localchat.network import config, server, util
+from pychatter.network import config, server, util
 
 
 @dataclass

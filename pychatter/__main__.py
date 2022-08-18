@@ -4,9 +4,9 @@ Created on Mon May 10 00:12:31 2021
 
 @author: Korean_Crimson
 """
-from localchat import cli
-from localchat.gui import app, init
-from localchat.network import cleanup, server
+from pychatter import cli
+from pychatter.gui import app, init
+from pychatter.network import cleanup, server
 
 
 def run_server():

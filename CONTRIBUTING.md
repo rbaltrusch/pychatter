@@ -1,6 +1,6 @@
-# Contributions to LocalChat
+# Contributions to pychatter
 
-Welcome to LocalChat and thanks for considering to contribute to this repository! Every contribution is welcome, no matter how small or large.
+Welcome to pychatter and thanks for considering to contribute to this repository! Every contribution is welcome, no matter how small or large.
 
 ## Open points
 
@@ -11,7 +11,7 @@ There are currently no large plans for this repository, but this is not a proble
 To setup your local development environment, open a terminal and run the following:
 
 ```
-git clone https://github.com/rbaltrusch/LocalChat
+git clone https://github.com/rbaltrusch/pychatter
 python -m pip install -r requirements.txt
 ```
 

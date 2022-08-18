@@ -1,12 +1,12 @@
-[![Unit tests](https://github.com/rbaltrusch/LocalChat/actions/workflows/pytest-unit-tests.yml/badge.svg)](https://github.com/rbaltrusch/LocalChat/actions/workflows/pytest-unit-tests.yml)
-[![Pylint](https://github.com/rbaltrusch/LocalChat/actions/workflows/pylint.yml/badge.svg)](https://github.com/rbaltrusch/LocalChat/actions/workflows/pylint.yml)
+[![Unit tests](https://github.com/rbaltrusch/pychatter/actions/workflows/pytest-unit-tests.yml/badge.svg)](https://github.com/rbaltrusch/pychatter/actions/workflows/pytest-unit-tests.yml)
+[![Pylint](https://github.com/rbaltrusch/pychatter/actions/workflows/pylint.yml/badge.svg)](https://github.com/rbaltrusch/pychatter/actions/workflows/pylint.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](https://opensource.org/licenses/MIT)
 
-# LocalChat
+# pychatter
 
-LocalChat is a direct chat tool, which may be run to communicate over a local network.
+pychatter is a direct chat tool, which may be run to communicate over a local network.
 
-![Gif of the application GUI](https://github.com/rbaltrusch/LocalChat/blob/master/localchat/gui/media/gif1.gif?raw=true "Gif of the application GUI")
+![Gif of the application GUI](https://github.com/rbaltrusch/pychatter/blob/master/pychatter/gui/media/gif1.gif?raw=true "Gif of the application GUI")
 
 Communication happens over the localhost port 8080.
 
@@ -16,7 +16,7 @@ This is primarily an exercise in duplex client-server communication using websoc
 
 To get a copy of this repository, simply open up git bash in an empty folder and use the command:
 
-    $ git clone https://github.com/rbaltrusch/localchat
+    $ git clone https://github.com/rbaltrusch/pychatter
 
 To install all python dependencies, run the following in your command line:
 
@@ -24,11 +24,11 @@ To install all python dependencies, run the following in your command line:
 
 To run the application, run the package from the root repository directory:
 
-    python -m localchat
+    python -m pychatter
 
 Hosting a chat server can be done directly inside the graphical user interface, or a dedicated server may be started from the command line using:
 
-    python -m localchat --server
+    python -m pychatter --server
 
 ## Configuration
 
@@ -66,7 +66,7 @@ Written in Python 3.7.3.
 
 ## License
 
-This repository is open-source software available under the [MIT License](https://github.com/rbaltrusch/localchat/blob/master/LICENSE).
+This repository is open-source software available under the [MIT License](https://github.com/rbaltrusch/pychatter/blob/master/LICENSE).
 
 ## Contact
 

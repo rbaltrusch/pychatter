@@ -1,6 +1,6 @@
 include README.md
 include LICENSE
 include requirements.txt
-include localchat/py.typed
+include pychatter/py.typed
 recursive-exclude tests *
 exclude config.json

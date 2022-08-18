@@ -12,7 +12,7 @@ import random
 import threading
 
 import pytest
-from localchat.network import client, server, util
+from pychatter.network import client, server, util
 
 server_thread = None
 

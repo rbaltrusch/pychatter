@@ -2,7 +2,7 @@
 
 [run]
 omit =
-    ../localchat/__main__.py,
+    ../pychatter/__main__.py,
     ../src/run_server.py,
     ../src/gui/*,
     unit/*,

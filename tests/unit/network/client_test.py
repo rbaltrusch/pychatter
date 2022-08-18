@@ -8,7 +8,7 @@ import socket
 import threading
 
 import pytest
-from localchat.network import client, config, server, util
+from pychatter.network import client, config, server, util
 
 
 class ServerSocket:

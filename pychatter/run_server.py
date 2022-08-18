@@ -5,7 +5,7 @@ Created on Mon May 10 18:48:31 2021
 @author: Korean_Crimson
 """
 
-from localchat.network import server
+from pychatter.network import server
 
 server.init()
 server.run_forever()

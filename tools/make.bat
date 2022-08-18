@@ -10,10 +10,10 @@ if exist "dist/main" (
 	rmdir /s /q "dist/main"
 )
 
-call "%pyinstaller_path%" --onedir --noupx --icon localchat/gui/media/icon.ico --exclude matplotlib --exclude pandas --exclude numpy localchat/__main__.py --noconsole -n LocalChat
+call "%pyinstaller_path%" --onedir --noupx --icon pychatter/gui/media/icon.ico --exclude matplotlib --exclude pandas --exclude numpy pychatter/__main__.py --noconsole -n pychatter
 
-echo v| xcopy /s /v /y "localchat/gui/media" "dist/main/gui/media"
-call "tools/link.vbs" "dist/LocalChat.lnk" "dist/main/main.exe"
+echo v| xcopy /s /v /y "pychatter/gui/media" "dist/main/gui/media"
+call "tools/link.vbs" "dist/pychatter.lnk" "dist/main/main.exe"
 copy "config.json" "dist"
 copy "README.md" "dist"
 copy "LICENSE" "dist"

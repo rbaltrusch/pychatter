@@ -11,8 +11,8 @@ import socket
 import threading
 import tkinter as tk
 
-from localchat.gui import app, config, root
-from localchat.network import client, server, util
+from pychatter.gui import app, config, root
+from pychatter.network import client, server, util
 
 
 def set_error(*_):

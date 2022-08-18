@@ -8,7 +8,7 @@ import logging
 import socket
 from typing import Any, Dict, Optional
 
-from localchat.network import config, util
+from pychatter.network import config, util
 
 
 class StartConnectionError(Exception):

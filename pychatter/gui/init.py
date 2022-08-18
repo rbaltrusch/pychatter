@@ -10,8 +10,8 @@ import json
 import os
 import tkinter as tk
 
-from localchat.gui import app, callbacks, components, config, root
-from localchat.gui.text import CustomText
+from pychatter.gui import app, callbacks, components, config, root
+from pychatter.gui.text import CustomText
 
 
 def init():

@@ -8,7 +8,7 @@ import ipaddress
 import math
 
 import pytest
-from localchat.network import util
+from pychatter.network import util
 
 
 @pytest.mark.parametrize(

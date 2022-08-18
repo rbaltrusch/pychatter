@@ -5,7 +5,7 @@ Created on Sat Jan 30 15:26:16 2021
 @author: Korean_Crimson
 """
 
-TITLE = "LocalChat"
+TITLE = "pychatter"
 PORT = 5555
 CONFIG_FILENAME = "config.json"
 MAX_MESSAGE_LENGTH = 280

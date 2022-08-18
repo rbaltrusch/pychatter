@@ -12,9 +12,9 @@ import uuid
 from _thread import start_new_thread
 from typing import Any, Callable, Dict, List
 
-from localchat.network import config
-from localchat.network.config import MAX_CHAT_RESP
-from localchat.network.util import Response, get_host_ip, parse_json_str
+from pychatter.network import config
+from pychatter.network.config import MAX_CHAT_RESP
+from pychatter.network.util import Response, get_host_ip, parse_json_str
 
 # pylint: disable=unused-argument
 # pylint: disable=global-statement

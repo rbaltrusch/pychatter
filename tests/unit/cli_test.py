@@ -3,7 +3,7 @@
 
 # pylint: disable=missing-function-docstring, missing-class-docstring
 
-from localchat import cli
+from pychatter import cli
 
 
 def test_server():
