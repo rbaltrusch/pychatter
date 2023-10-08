@@ -31,6 +31,7 @@ setuptools.setup(
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
+        "Intended Audience :: End Users/Desktop",
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
@@ -38,6 +39,7 @@ setuptools.setup(
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
+        "Topic :: Communications :: Chat",
         "Typing :: Typed",
     ],
 )
