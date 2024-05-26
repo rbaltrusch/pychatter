@@ -23,6 +23,12 @@ Hosting a chat server can be done directly inside the graphical user interface, 
 
     python -m pychatter --server
 
+## ⚠️ State of the repository ⚠️
+
+This repository is unlikely to receive new features in the future, although maintenance and small fixes will still be done.
+
+This means that some features that are missing now will stay missing (but feel free to submit a pull request to add them!), and non-optimal aspects of the codebase or the application are unlikely to get fixed.
+
 ## Configuration
 
 The chat application supports external configuration files. Place a file named config.json in the directory from which the application is run.
