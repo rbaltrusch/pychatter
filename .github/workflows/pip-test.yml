@@ -2,11 +2,11 @@ name: Check pip install
 
 on:
   workflow_run:
-    workflows: ['Upload Python Package']
+    workflows: ["Upload Python Package"]
     types: [completed]
 
 env:
-  PACKAGE_NAME: desktop_shop
+  PACKAGE_NAME: pychatter
 
 jobs:
   build:
